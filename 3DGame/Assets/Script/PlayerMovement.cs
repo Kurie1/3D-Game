@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
    [SerializeField] private int JumpHight = 3;
    [SerializeField] private float PlayerSpeed = 5;
    [SerializeField] private Transform GroundCheck;
-    [SerializeField] private LayerMask ground;
+   [SerializeField] private LayerMask ground;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,10 +26,20 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump")&&IsGrounded())
         {
-           rb.velocity = new Vector3(rb.velocity.x, JumpHight, rb.velocity.z);
+            Jump();
         }
        
-
+    }
+    private void Jump()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, JumpHight, rb.velocity.z);
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("EnemyHead"))
+        {
+            Destroy(collision.transform.parent.gameObject);
+        }
     }
     private bool IsGrounded()
     {
